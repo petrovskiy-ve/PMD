@@ -65,6 +65,7 @@ fun NewsCard(news: News) {
                     modifier = Modifier
                         .fillMaxWidth(1f)
                         .fillMaxHeight(0.8f)
+                        .padding(6.dp)
                 ) {
                     Text(text = news.content,
                         modifier = Modifier.fillMaxWidth(),
@@ -78,9 +79,9 @@ fun NewsCard(news: News) {
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .fillMaxHeight(1f)
-                .background(Color.Red),
+                .background(Color(13, 190, 112)),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.End
         ) {
             //var likes by remember { mutableStateOf(0) } // Счетчик лайков
 
@@ -92,7 +93,6 @@ fun NewsCard(news: News) {
             print("Before: " + news.likes)
 
             Spacer(modifier = Modifier.width(8.dp))
-
             Icon(
                 imageVector = Icons.Default.ThumbUp,
                 contentDescription = null,
@@ -101,6 +101,7 @@ fun NewsCard(news: News) {
                     newsViewModel.incrementLikes(news)
                 }
             )
+            Spacer(modifier = Modifier.width(8.dp))
         }
     }
 }
