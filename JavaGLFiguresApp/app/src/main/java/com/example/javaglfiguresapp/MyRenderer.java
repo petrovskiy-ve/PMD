@@ -65,13 +65,13 @@ public class MyRenderer implements GLSurfaceView.Renderer {
             case 0: // Куб
                 gl.glTranslatef(0.0f, 0.0f, -2.0f);
                 gl.glScalef(0.6f, 0.6f, 0.6f);
-                gl.glRotatef(angleCube, 1.0f, 1.0f, 1.0f);
+                gl.glRotatef(angleCube, 1.0f, 1.0f, 0.5f);
                 mCube.draw(gl);
                 break;
             case 1: // Сфера
                 //gl.glTranslatef(0f, 1.0f, -4.5f);
                 gl.glScalef(0.05f, 0.05f, 0.05f);
-                gl.glRotatef(mAngle, 0, 1, 0);
+                gl.glRotatef(mAngle, 1, 1, -1);
                 mSphere.draw(gl);
                 break;
             case 2: // Прямоугольник
@@ -83,7 +83,7 @@ public class MyRenderer implements GLSurfaceView.Renderer {
 
         float speedCube = -1.5f;
         angleCube += speedCube;
-        mAngle+=2;
+        mAngle += 1;
     }
 
     public boolean onTouchEvent(MotionEvent event) {

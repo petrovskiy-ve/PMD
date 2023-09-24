@@ -19,7 +19,7 @@ class Sphere implements GLSurfaceView.Renderer {
     };
 
     public Sphere(float R) {
-        int dtheta = 15, dphi = 15;
+        int dtheta = 10, dphi = 10;
         float DTOR = (float)(Math.PI / 180.0f);
 
         ByteBuffer byteBuf = ByteBuffer.allocateDirect(5000 * 3 * 4);
@@ -42,11 +42,12 @@ class Sphere implements GLSurfaceView.Renderer {
                 mVertexBuffer.put((float)(Math.cos((theta+dtheta) * DTOR) * Math.cos((phi+dphi)*DTOR))*R);
                 mVertexBuffer.put((float)(Math.cos((theta+dtheta) * DTOR) * Math.sin((phi+dphi)*DTOR))*R);
                 mVertexBuffer.put((float)(Math.sin((theta+dtheta) * DTOR)) * R);
-                n += 3;
+
                 mVertexBuffer.put((float)(Math.cos(theta*DTOR) * Math.cos((phi+dphi)*DTOR))*R);
                 mVertexBuffer.put((float)(Math.cos(theta*DTOR) * Math.sin((phi+dphi)*DTOR))*R);
                 mVertexBuffer.put((float)(Math.sin(theta*DTOR))*R);
-                n++;
+
+                n += 4;
 
                 textureBuffer.put(phi / 360.0f);
                 textureBuffer.put((90 + theta) / 180.0f);

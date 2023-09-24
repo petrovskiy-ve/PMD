@@ -48,7 +48,7 @@ public class MyRenderer implements GLSurfaceView.Renderer {
         gl.glOrthof(-10,10, -10, 10, -10, 10);
         gl.glMatrixMode(GL10.GL_MODELVIEW);
         gl.glLoadIdentity();
-        gl.glScalef(1.5f, 1f, 1);
+        gl.glScalef(2f, 1f, 1);
         loadGLTexture(gl);
     }
 
@@ -113,10 +113,11 @@ public class MyRenderer implements GLSurfaceView.Renderer {
 
         RotationOffset = 2f;
         RotationSpeed = 0.5f;
-        gl.glTranslatef(RotationOffset * (float)(Math.cos(moonSpeed * RotationSpeed)),
-                 0,
-                RotationOffset * (float)(Math.sin(moonSpeed * RotationSpeed)));
-        gl.glRotatef(moonRotate, 1f, 0f, 1f);
+        gl.glTranslatef(RotationOffset * (float)(Math.cos(earthSpeed * RotationSpeed)),
+                RotationOffset * (float)(Math.sin(earthSpeed * RotationSpeed)),
+                0);
+        gl.glRotatef(moonRotate, 1f, 0f, 0f);
+
         gl.glColor4f(0, 1f ,0f , 1);
 
         gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[2]);
