@@ -23,7 +23,7 @@ public class Sphere {
                     "varying vec3 vNormal;" +
                     "void main() {" +
                     "  gl_Position = uMVPMatrix * vPosition;" +
-                    "  vNormal = mat3(uMVPMatrix) * aNormal;" +
+                    "  vNormal = normalize(mat3(uMVPMatrix) * aNormal);" +
                     "}";
 
     private final String fragmentShaderCode =
@@ -33,7 +33,7 @@ public class Sphere {
                     "uniform vec3 uSpecularColor;" +
                     "uniform float uShininess;" +
                     "uniform vec3 uLightPosition;" +
-                    "uniform vec3 uObjectColor;" + // Добавление uniform-переменной для цвета объекта
+                    "uniform vec3 uObjectColor;" +
                     "varying vec3 vNormal;" +
                     "void main() {" +
                     "  vec3 normal = normalize(vNormal);" +
@@ -46,11 +46,10 @@ public class Sphere {
                     "  vec3 viewDirection = normalize(-gl_FragCoord.xyz);" +
                     "  float specular = pow(max(dot(reflectionDirection, viewDirection), 0.0), uShininess);" +
                     "  vec3 specularColor = uSpecularColor * specular;" +
-                    "  vec3 finalColor = uObjectColor * (ambientColor + diffuseColor + specularColor);" + // Умножение цвета объекта на освещение
+                    "  float ao = ambient * 0.3 + 0.1;"+
+                    "  vec3 finalColor = uObjectColor * (ambientColor + diffuseColor + specularColor) * ao;" +
                     "  gl_FragColor = vec4(finalColor, 1.0);" +
                     "}";
-
-
 
     private int uLightPositionHandle;
     private int uAmbientColorHandle;
