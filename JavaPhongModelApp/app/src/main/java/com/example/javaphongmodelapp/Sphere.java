@@ -33,6 +33,7 @@ public class Sphere {
                     "uniform vec3 uSpecularColor;" +
                     "uniform float uShininess;" +
                     "uniform vec3 uLightPosition;" +
+                    "uniform vec3 uObjectColor;" + // Добавление uniform-переменной для цвета объекта
                     "varying vec3 vNormal;" +
                     "void main() {" +
                     "  vec3 normal = normalize(vNormal);" +
@@ -45,8 +46,10 @@ public class Sphere {
                     "  vec3 viewDirection = normalize(-gl_FragCoord.xyz);" +
                     "  float specular = pow(max(dot(reflectionDirection, viewDirection), 0.0), uShininess);" +
                     "  vec3 specularColor = uSpecularColor * specular;" +
-                    "  gl_FragColor = vec4(ambientColor + diffuseColor + specularColor, 1.0);" +
+                    "  vec3 finalColor = uObjectColor * (ambientColor + diffuseColor + specularColor);" + // Умножение цвета объекта на освещение
+                    "  gl_FragColor = vec4(finalColor, 1.0);" +
                     "}";
+
 
 
     private int uLightPositionHandle;
@@ -55,6 +58,7 @@ public class Sphere {
     private int uSpecularColorHandle;
     private int uShininessHandle;
     private int aNormalHandle;
+    private int uObjectColorHandle;
 
     public Sphere(int numSegments, float radius) {
         // Компиляция шейдеров и создание программы
@@ -73,6 +77,9 @@ public class Sphere {
         uSpecularColorHandle = GLES20.glGetUniformLocation(program, "uSpecularColor");
         uShininessHandle = GLES20.glGetUniformLocation(program, "uShininess");
         aNormalHandle = GLES20.glGetAttribLocation(program, "aNormal");
+
+        // Получение местоположения uniform-переменной для цвета объекта
+        uObjectColorHandle = GLES20.glGetUniformLocation(program, "uObjectColor");
 
         generateSphereVertices(numSegments, radius);
         generateNormals(numSegments);
@@ -171,7 +178,7 @@ public class Sphere {
         normalBuffer.position(0);
     }
 
-    public void draw(float[] mvpMatrix, float[] lightPosition, float[] ambientColor, float[] diffuseColor, float[] specularColor, float shininess) {
+    public void draw(float[] mvpMatrix, float[] lightPosition, float[] ambientColor, float[] diffuseColor, float[] specularColor, float shininess, float[] objectColor) {
         GLES20.glUseProgram(program);
 
         // Передача параметров освещения в шейдер
@@ -180,6 +187,9 @@ public class Sphere {
         GLES20.glUniform3fv(uDiffuseColorHandle, 1, diffuseColor, 0);
         GLES20.glUniform3fv(uSpecularColorHandle, 1, specularColor, 0);
         GLES20.glUniform1f(uShininessHandle, shininess);
+
+        // Установка цвета объекта
+        GLES20.glUniform3fv(uObjectColorHandle, 1, objectColor, 0);
 
         int positionHandle = GLES20.glGetAttribLocation(program, "vPosition");
         int mvpMatrixHandle = GLES20.glGetUniformLocation(program, "uMVPMatrix");
@@ -197,4 +207,5 @@ public class Sphere {
         GLES20.glDisableVertexAttribArray(positionHandle);
         GLES20.glDisableVertexAttribArray(aNormalHandle);
     }
+
 }

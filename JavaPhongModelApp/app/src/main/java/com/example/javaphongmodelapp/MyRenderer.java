@@ -16,6 +16,8 @@ public class MyRenderer implements GLSurfaceView.Renderer {
     private float[] mViewMatrix = new float[16];
     private float[] mMVPMatrix = new float[16];
     private float mRotationAngle = 0.0f;
+    private float mLightOffsetX = 0.1f;
+    private float mLightDirection = 1;
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -27,7 +29,7 @@ public class MyRenderer implements GLSurfaceView.Renderer {
             Log.e("OpenGL Error", "Error code: " + error);
         }
 
-        sphere = new Sphere(60, 1.0f);
+        sphere = new Sphere(150, 1.0f);
     }
 
     @Override
@@ -61,23 +63,28 @@ public class MyRenderer implements GLSurfaceView.Renderer {
         Matrix.rotateM(mMVPMatrix, 0, mRotationAngle, 0, 1, 0);
 
         // Параметры освещения
-        float lightX = -3.0f;
-        float lightY = 4.0f;
+        float lightX = -10.0f + mLightOffsetX;
+        float lightY = 0.0f;
         float lightZ = -3.0f;
 
-        float[] lightPosition = {lightX * 1000, lightY * 1000, lightZ * 1000}; // Позиция источника света
-        float[] ambientColor = {1.0f, 0.0f, 1.0f}; // Цвет амбиентного освещения
-        float[] diffuseColor = {1.0f, 1.0f, 1.0f}; // Цвет диффузного освещения
-        float[] specularColor = {1.0f, 1.0f, 1.0f}; // Цвет зеркального освещения
-        float shininess = 1000.0f; // Значение блескости
+        float[] lightPosition = {lightX * 1000, lightY * 1000, lightZ * 1000};
+        float[] ambientColor = {0.6f, 0.3f, 0.7f};
+        float[] diffuseColor = {0.3f, 0.3f, 0.3f};
+        float[] specularColor = {1.0f, 1.0f, 1.0f};
+        float[] objectColor = {1.0f, 1.0f, 1.0f};
+        float shininess = 500.0f;
 
-        // Рисуем сферу с передачей параметров освещения
-        sphere.draw(mMVPMatrix, lightPosition, ambientColor, diffuseColor, specularColor, shininess);
+        sphere.draw(mMVPMatrix, lightPosition, ambientColor, diffuseColor, specularColor, shininess, objectColor);
 
-        // Увеличиваем угол поворота для анимации
         mRotationAngle += 1.0f;
-    }
 
+        float lightStep = 0.1f;
+        mLightOffsetX += mLightDirection * lightStep;
+
+        if (mLightOffsetX >= 20.0f || mLightOffsetX <= 0.0f) {
+            mLightDirection *= -1;
+        }
+    }
 
     public static int loadShader(int type, String shaderCode) {
         int shader = GLES20.glCreateShader(type);
