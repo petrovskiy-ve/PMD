@@ -17,7 +17,8 @@ public class MyRenderer implements GLSurfaceView.Renderer {
     private float[] mMVPMatrix = new float[16];
     private float mRotationAngle = 0.0f;
     private float mLightAngleX = 0f;
-    private float mLightAngleZ = 0;
+    private float mLightAngleY = 0f;
+    private float mLightAngleZ = 0f;
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -29,7 +30,7 @@ public class MyRenderer implements GLSurfaceView.Renderer {
             Log.e("OpenGL Error", "Error code: " + error);
         }
 
-        sphere = new Sphere(100, 1.0f);
+        sphere = new Sphere(8, 1.0f);
     }
 
     @Override
@@ -65,12 +66,12 @@ public class MyRenderer implements GLSurfaceView.Renderer {
         // Параметры освещения
         float radius = 50.0f;
         float lightX = (float) (radius * Math.sin(Math.toRadians(mLightAngleX)));
-        float lightY = 45.0f;
+        float lightY = 10.0f * (float) Math.sin(Math.toRadians(mLightAngleY)); // Движение по Y как синусоида
         float lightZ = (float) (radius * Math.cos(Math.toRadians(mLightAngleZ)));
 
         float[] lightPosition = {lightX * 1000, lightY * 1000, lightZ * 1000};
-        float[] ambientColor = {0.2f, 0.2f, 0.2f, 1.0f};
-        float[] diffuseColor = {0.7f, 0.4f, 0.8f, 1.0f};
+        float[] ambientColor = {2.2f, 2.2f, 2.2f, 1.0f};
+        float[] diffuseColor = {0.0f, 0.0f, 1.0f, 1.0f};
         float[] specularColor = {1.0f, 1.0f, 1.0f, 1.0f};
         float[] objectColor = {1.0f, 1.0f, 1.0f, 1.0f};
         float shininess = 100.0f;
@@ -80,15 +81,20 @@ public class MyRenderer implements GLSurfaceView.Renderer {
         mRotationAngle += 1.0f;
 
         mLightAngleX += 1.0f; // Увеличиваем угол движения по X
+        mLightAngleY += 10.0f; // Увеличиваем угол движения по Y
         mLightAngleZ += 1.0f; // Увеличиваем угол движения по Z
 
         if (mLightAngleX >= 360.0f) {
             mLightAngleX -= 360.0f;
         }
+        if (mLightAngleY >= 360.0f) {
+            mLightAngleY -= 360.0f;
+        }
         if (mLightAngleZ >= 360.0f) {
             mLightAngleZ -= 360.0f;
         }
     }
+
 
 
     public static int loadShader(int type, String shaderCode) {
