@@ -30,7 +30,7 @@ public class MyRenderer implements GLSurfaceView.Renderer {
             Log.e("OpenGL Error", "Error code: " + error);
         }
 
-        sphere = new Sphere(8, 1.0f);
+        sphere = new Sphere(80, 1.0f);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class MyRenderer implements GLSurfaceView.Renderer {
         float[] ambientColor = {2.2f, 2.2f, 2.2f, 1.0f};
         float[] diffuseColor = {0.0f, 0.0f, 1.0f, 1.0f};
         float[] specularColor = {1.0f, 1.0f, 1.0f, 1.0f};
-        float[] objectColor = {1.0f, 1.0f, 1.0f, 1.0f};
+        float[] objectColor = {1.0f, 0.0f, 0.0f, 1.0f};
         float shininess = 100.0f;
 
         sphere.draw(mMVPMatrix, lightPosition, ambientColor, diffuseColor, specularColor, shininess, objectColor);
